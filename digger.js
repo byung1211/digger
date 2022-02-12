@@ -15,9 +15,9 @@ const projectName = "Zipcy's SuperNormal";
 const projectPrefix = "ZIPS #";
 const fileExtension = "png"
 const projectUrl = "https://opensea.io/assets/0xd532b88607b1877fe20c181cba2550e3bbd6b31c/";
-const startNumber = 1;
-const endNumber = 1;
-const sizeOfFolder = 100;
+const startNumber = 6;
+const endNumber = 8887;
+
 
 
 
@@ -58,11 +58,15 @@ function run () {
  
             let downloadUrl = '';
 
-            for(let i = startNumber; i <= endNumber; i++) {      //// for loop 1 - start
+            for(let imgNumber = startNumber; imgNumber <= endNumber; imgNumber++) {      //// for loop 1 - start
               
-              downloadUrl = projectUrl + i;
-              
-              console.log(i+": Download URL: "+downloadUrl);
+
+              if(projectUrl.endsWith("/"))
+                downloadUrl = projectUrl + imgNumber;
+              else
+                downloadUrl = projectUrl + "/" + imgNumber;
+
+              console.log(imgNumber+": Download URL: "+downloadUrl);
 
               await page.goto(downloadUrl, { waitUntil: 'networkidle2' });
 
@@ -83,7 +87,7 @@ function run () {
               const images = urls;
 
               // Check the folder to store images
-              const dir = `./${projectName}`;
+              const dir = `./output/${projectName}`;
               if (!fs.existsSync(dir)){
                 fs.mkdirSync(dir);
               }
@@ -91,7 +95,7 @@ function run () {
               // Download images
               for (let i = 0; i < images.length; i++) {
               
-                result = await download(images[i].url.replace("w600", "s0"), `${dir}/${projectPrefix}${i}.${fileExtension}`);
+                result = await download(images[i].url.replace("w600", "s0"), `${dir}/${projectPrefix}${imgNumber}.${fileExtension}`);
             
                 if (result === true) {
                   console.log('Success:', images[i], 'has been downloaded successfully.');
