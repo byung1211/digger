@@ -15,10 +15,8 @@ const projectName = "Zipcy's SuperNormal";
 const projectPrefix = "ZIPS #";
 const fileExtension = "png"
 const projectUrl = "https://opensea.io/assets/0xd532b88607b1877fe20c181cba2550e3bbd6b31c/";
-const startNumber = 6;
-const endNumber = 8887;
-
-
+const startNumber = 2001;
+const endNumber = 2500;
 
 
 function sleep(milliseconds) {
@@ -48,19 +46,16 @@ const download = (url, destination) => new Promise((resolve, reject) => {
 
 function run () {
     return new Promise(async (resolve, reject) => {
-        try {
-            const browser = await puppeteer.launch(
-            {
-                headless: false
-            });
 
-            const page = await browser.newPage();
+      try {
  
             let downloadUrl = '';
 
             for(let imgNumber = startNumber; imgNumber <= endNumber; imgNumber++) {      //// for loop 1 - start
-              
 
+              const browser = await puppeteer.launch({headless: false});
+              const page = await browser.newPage();
+    
               if(projectUrl.endsWith("/"))
                 downloadUrl = projectUrl + imgNumber;
               else
@@ -82,7 +77,7 @@ function run () {
               });
 
               // Set a delay
-              sleep(3000);
+              sleep(5000);
               
               const images = urls;
 
@@ -103,11 +98,12 @@ function run () {
                   console.log('Error:', images[i], 'was not downloaded.');
                   console.error(result);
                 }
+                //sleep(2000);
               }
 
+              browser.close();
             } //// for loop 1 - end
 
-            browser.close();
 
             return resolve(urls);
         } catch (e) {
